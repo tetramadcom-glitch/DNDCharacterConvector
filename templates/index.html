@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="{{ lang_code }}">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ texts.title }}</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=IM+Fell+DW+Pica&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- СТИЛИЗАЦИЯ D&D --- */
+        
+        /* Фон и Основной Текст */
+        body { 
+            /* Текстура старого пергамента */
+            background-color: #e6d3a8; 
+            background-image: url('https://www.transparenttextures.com/patterns/old-map.png'); /* Пример текстуры старой карты */
+            font-family: 'Merriweather', serif; /* Основной шрифт с засечками */
+            margin: 0;
+            padding: 20px;
+        }
+        
+        /* Контейнер (рабочая область) */
+        .container { 
+            max-width: 800px; 
+            margin: 20px auto; 
+            background: rgba(255, 255, 255, 0.9); /* Полупрозрачный белый для читаемости */
+            padding: 20px 40px; 
+            border-radius: 12px; 
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4); 
+            border: 4px solid #800000; /* Темно-красная рамка */
+        }
+        
+        /* Заголовки */
+        h1, h2 { 
+            font-family: 'IM Fell DW Pica', serif; /* Фэнтезийный шрифт для заголовков */
+            color: #400000; /* Темно-коричневый или бордовый */
+            text-align: center; 
+            text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Титульное Изображение */
+        .header-image {
+            display: block;
+            margin: 0 auto 20px auto;
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        /* --- ОБЩИЕ ЭЛЕМЕНТЫ --- */
+        form div { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; color: #400000; }
+        input[type="text"], textarea, select { 
+            width: 98%; 
+            padding: 10px; 
+            border: 2px solid #a0a0a0; 
+            border-radius: 4px; 
+            box-sizing: border-box; 
+            background-color: #fcfcfc;
+            font-family: 'Merriweather', serif;
+        }
+        button { 
+            background-color: #800000; 
+            color: white; 
+            padding: 10px 15px; 
+            border: none; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            font-family: 'IM Fell DW Pica', serif;
+            font-size: 1.1em;
+            transition: background-color 0.3s;
+        }
+        button:hover { background-color: #a02020; }
+        
+        /* Поле Результата */
+        .result-box { 
+            margin-top: 30px; 
+            padding: 20px; 
+            border: 3px dashed #400000; /* Пунктирная граница, как на листе */
+            border-radius: 8px; 
+            background-color: #fffaf0; /* Очень светлый пергаментный цвет */
+        }
+        .result-box br { content: " "; display: block; margin: 5px 0; }
+        .result-box strong { font-size: 1.1em; color: #400000; font-weight: 700; }
+        
+        /* Переключатель языка */
+        .lang-switcher { float: right; margin-bottom: 10px; font-family: 'Merriweather', serif;}
+        .lang-switcher a { margin-left: 10px; text-decoration: none; color: #800000; font-weight: bold; }
+        .lang-switcher a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="lang-switcher">
+            <a href="/ru" style="{% if lang_code == 'ru' %}text-decoration: underline;{% endif %}">RU</a> | 
+            <a href="/en" style="{% if lang_code == 'en' %}text-decoration: underline;{% endif %}">EN</a>
+        </div>
+        
+        <img src="{{ url_for('static', filename='images/Logo_DNDCc2.png') }}" alt="D20 dice and scroll" class="header-image">
+        <h1>{{ texts.title }}</h1>
+        <p style="text-align: center;">{{ texts.subtitle }}</p>
+
+        <form method="POST">
+            <div>
+                <label for="name">{{ texts.name_label }}</label>
+                <input type="text" id="name" name="name" required placeholder="{{ texts.name_placeholder }}">
+            </div>
+            
+            <div>
+                <label for="universe">{{ texts.universe_label }}</label>
+                <input type="text" id="universe" name="universe" required placeholder="{{ texts.universe_placeholder }}">
+            </div>
+            
+            <div>
+                <label for="description">{{ texts.description_label }}</label>
+                <textarea id="description" name="description" rows="4" required placeholder="{{ texts.description_placeholder }}"></textarea>
+            </div>
+            
+            <button type="submit">{{ texts.button }}</button>
+        </form>
+
+        {% if result %}
+            <div class="result-box">
+                <h2>{{ texts.result_header }}: {{ name }}</h2>
+                <p>{{ result | safe }}</p>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
